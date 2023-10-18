@@ -1,0 +1,50 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}affiche categorie{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="container-fluid pt-4 px-4">
+        <div class="row ">
+            <div class="col">
+                <div class="bg-light rounded h-100 p-4">
+                    <h6 class="mb-4">affichage produit</h6>
+                    <table class="table">
+                        <thead>
+                        <tr>
+
+                            <th scope="col">name</th>
+                            <th scope="col">quantity</th>
+                            <th scope="col">price</th>
+                            <th scope="col">image</th>
+                            <th scope="col">categorie</th>
+                            <th scope="col">supprimer</th>
+                            <th scope="col">modifier</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for produit in produit %}
+                            <tr>
+
+                                <td>{{ produit.nomProduit }}</td>
+                                <td>{{ produit.quantite }}</td>
+                                <td>{{ produit.prix }}</td>
+                                <td><img src="{{ asset(produit.image) }}" width="50" height="50"></td>
+                                <td>{{ produit.categorie.name }}</td>
+
+
+                                <td><a href="{{ path('deleteprod',{id:produit.id}) }}"><button type="button" class="btn btn-danger">supprimer</button></a></td>
+                                <td><a href="{{ path('updateprod',{id:produit.id}) }}"><button type="button" class="btn btn-success">modifier</button></a></td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

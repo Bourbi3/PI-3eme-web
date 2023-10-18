@@ -1,0 +1,64 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}affiche reclamations{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="container-fluid pt-4 px-4">
+        <div class="row ">
+            <div class="col">
+                <div class="bg-light rounded h-100 p-4">
+                    <h6 class="mb-4">affichage produit</h6>
+                    <input type="text" class="form-control chercher" placeholder="chercher">
+                    <table class="table">
+                        <thead>
+                        <tr>
+
+                            <th scope="col">name</th>
+                            <th scope="col">reclamation</th>
+                            <th scope="col">username</th>
+
+
+                        </tr>
+                        </thead>
+                        <tbody class="content-rec">
+                        {% include 'admin/recFilter.html.twig' with {'rec': rec} only %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+
+        document.querySelector('.chercher').addEventListener('keydown',e=>{
+        const value=document.querySelector('.chercher').value
+        chercher(value)
+
+
+        })
+        async function chercher(value){
+            const response = await fetch('/reclamation/chercher?name='+value, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            if (response.status >= 200 && response.status < 300) {
+                const data = await response.json()
+                const content = document.querySelector('.content-rec')
+                content.innerHTML = "";
+                content.innerHTML= data.content
+            }
+
+
+
+        }
+
+    </script>
+{% endblock %}

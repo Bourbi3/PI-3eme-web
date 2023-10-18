@@ -1,0 +1,28 @@
+{% block recaptcha_submit_widget %}
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onCaptcha(token) {
+          var elem = document.getElementById({{ id }})
+          while(elem.parentElement!=null){
+
+              if(elem.tagName=='FORM'){
+
+                  elem.submit();
+                  break;
+              }
+              elem=elem.parentElement
+          }
+
+        }
+    </script>
+    {% set label = button %}
+    {% set attr = attr | merge({
+        'type' :'',
+        'class': 'g-recaptcha',
+        'data-sitekey' : key,
+        'data-callback' :'onCaptcha',
+        'data-action' : 'submit'
+    }) %}
+{% block submit_widget %}
+{% endblock %}
+{% endblock %}

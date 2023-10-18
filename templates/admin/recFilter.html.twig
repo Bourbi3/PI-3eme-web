@@ -1,0 +1,13 @@
+{% for r in rec %}
+    <tr>
+
+        <td>{{ r.nom }}</td>
+        <td>{{ r.msg }}</td>
+        <td>{{ r.user.username }}</td>
+
+
+
+        <td><a href="{{ path('respond',{id:r.id}) }}"><button type="button" class="btn btn-success">respond</button></a></td>
+
+    </tr>
+{% endfor %}

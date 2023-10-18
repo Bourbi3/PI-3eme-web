@@ -1,0 +1,7 @@
+services:
+  recaptcha.type:
+    class: widehaven\recaptchaBundle\type\RecaptchaSubmitType
+    tags: ['form.type']
+    arguments:
+      $key: '%recaptcha.key%'
+

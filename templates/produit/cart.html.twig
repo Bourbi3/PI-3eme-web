@@ -1,0 +1,293 @@
+{% extends 'base.html.twig' %}
+{% set prixtotal=0 %}
+   {% block stylesheets %}
+       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+             integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+             crossorigin=""/>
+
+   {% endblock %}
+{% block body %}
+    <style>
+
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+
+        #map { height: 180px; }
+
+        .card-body {
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 1.40rem
+        }
+
+        .img-sm {
+            width: 80px;
+            height: 80px
+        }
+
+        .itemside .info {
+            padding-left: 15px;
+            padding-right: 7px
+        }
+
+        .table-shopping-cart .price-wrap {
+            line-height: 1.2
+        }
+
+        .table-shopping-cart .price {
+            font-weight: bold;
+            margin-right: 5px;
+            display: block
+        }
+
+        .text-muted {
+            color: #969696 !important
+        }
+
+
+
+        .card {
+            position: relative;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, .125);
+            border-radius: 0px
+        }
+
+        .itemside {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            width: 100%
+        }
+
+        .dlist-align {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex
+        }
+
+        [class*="dlist-"] {
+            margin-bottom: 5px
+        }
+
+        .coupon {
+            border-radius: 1px
+        }
+
+        .price {
+            font-weight: 600;
+            color: #212529
+        }
+
+        .btn.btn-out {
+            outline: 1px solid #fff;
+            outline-offset: -5px
+        }
+
+        .btn-main {
+            border-radius: 2px;
+            text-transform: capitalize;
+            font-size: 15px;
+            padding: 10px 19px;
+            cursor: pointer;
+            color: #fff;
+            width: 100%
+        }
+
+        .btn-light {
+            color: #ffffff;
+            background-color: #F44336;
+            border-color: #f8f9fa;
+            font-size: 12px
+        }
+
+        .btn-light:hover {
+            color: #ffffff;
+            background-color: #F44336;
+            border-color: #F44336
+        }
+
+        .btn-apply {
+            font-size: 11px
+        }
+    </style>
+    <div class="main_slider">
+        <div class="row">
+            <aside class="col-lg-9">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table table-borderless table-shopping-cart">
+                            <thead class="text-muted">
+
+                            <tr class="small text-uppercase">
+                                <th scope="col">Product</th>
+                                <th scope="col" width="120">quantity</th>
+                                <th scope="col" width="120">Price</th>
+                                <th scope="col" class="text-right d-none d-md-block" width="200">quantity ship</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for p in produits %}
+                            <tr>
+                                <td>
+                                    <figure class="itemside align-items-center">
+                                        <div class="aside"><img src="{{ asset(p.image) }}" class="img-sm"></div>
+                                        <figcaption class="info"> <a href="#" class="title text-dark" data-abc="true">{{ p.nomProduit }}</a>
+                                            <p class="text-muted small">p.categorie.name </p>
+                                        </figcaption>
+                                    </figure>
+                                </td>
+                                <td>
+                                    <div class="price-wrap"> <var class="price">{{ cart[p.id]}}</var> </div>
+                                <td>
+                                    <div class="price-wrap"> <var class="price">{{ p.prix }}TND</var>  </div>
+                                </td>
+                                <td class="text-right d-none d-md-block">  <a href="{{ path('remove_cart',{id:p.id}) }}" class="btn btn-light" data-abc="true"> Remove</a> </td>
+                            </tr>
+                                {% set prixtotal=prixtotal+(cart[p.id]* p.prix ) %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </aside>
+            <aside class="col-lg-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <dl class="dlist-align">
+                            <dt>Total price:</dt>
+                            <dd class="text-right ml-3">{{ prixtotal }}</dd>
+
+                        </dl>
+                        <hr> <a href="{{ path('new_commande') }}" class="btn btn-out btn-primary btn-square btn-main" data-abc="true"> add order </a> <a href="{{ path('app_produit') }}" class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Continue Shopping</a>
+
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" action="{{ path('new_livraison') }}" id="ajoutliv">
+                            <label for="geo-select">Choose a country:</label>
+
+                            <select class="wejden" name="dest" id="geo-select">
+
+                            </select>
+                        <div style="alignment: center;margin-top: 20px">
+                        <button type="submit" class="btn btn-out btn-primary btn-square btn-main"> add livraison</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+        <div id="map" style="height: 180px"></div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+            integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+            crossorigin=""></script>
+    <script>
+
+        const form = document.querySelector('#ajoutliv')
+        const input = document.querySelector('.destin')
+        const errorP = document.querySelector('.error')
+        form.addEventListener('submit',e=>{
+            if(input.value==""){
+               e.preventDefault()
+                errorP.style.display = "block"
+
+
+
+
+
+            }
+
+        })
+        async function loadCities(){
+            const response = await fetch('https://raw.githubusercontent.com/lutangar/cities.json/master/cities.json', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            if (response.status >= 200 && response.status < 300) {
+                const data = await response.json()
+                console.log(data)
+            }
+
+
+
+        }
+
+
+
+    </script>
+    <script>
+        var table = []
+        const selected  = document.querySelector('#geo-select')
+
+
+        fetch('{{ asset('front/geo.json') }}')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("HTTP error " + response.status);
+                }
+                return response.json();
+            })
+            .then(json => {
+
+
+                for(var i=0 ;i<json.length;i++){
+                    if(json[i].country==="TN"){
+                        table.push([json[i].name,json[i].lat,json[i].lng])
+                        var opt = document.createElement('option');
+                        opt.value = json[i].name;
+                        opt.innerHTML = "tunisia : "+json[i].name;
+                        selected.appendChild(opt);
+
+
+                    }
+
+                }
+                //console.log(this.users);
+            })
+
+
+        document.querySelector('#geo-select').addEventListener('change',e=>{
+
+            const value =  document.querySelector('#geo-select').value
+            table.forEach(element=>{
+                if(element[0]===value){
+
+                    L.marker([element[1], element[2]]).addTo(map)
+                        .bindPopup(value+'.<br> Tunisie.')
+                        .openPopup();
+                    tiles.addTo(map)
+                }
+
+            })
+
+        })
+        const map = L.map('map').setView([51.505, -0.09], 13);
+        const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        const tiles = L.tileLayer(tileUrl,{attribution})
+        L.marker([51.5, -0.09]).addTo(map)
+            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+            .openPopup();
+        tiles.addTo(map)
+    </script>
+
+
+{% endblock %}

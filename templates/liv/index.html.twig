@@ -1,0 +1,54 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}affiche categorie{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="container-fluid pt-4 px-4">
+        <div class="row ">
+            <div class="col">
+                <div class="bg-light rounded h-100 p-4">
+                    <h6 class="mb-4">commandes</h6>
+                    <table class="table">
+                        <thead>
+                        <tr>
+
+                            <th scope="col">total</th>
+                            <th scope="col">state</th>
+                            <th scope="col">creationDate</th>
+                            <th scope="col">destination</th>
+                            <th scope="col">username</th>
+
+                            <th scope="col">supprimer</th>
+                            <th scope="col">modifier</th>
+
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for c in livraisons %}
+                            <tr>
+
+                                <td>{{ c.prixTotal }}</td>
+                                <td>{{ c.state }}</td>
+
+                                <td>{{ c.dateCreation | date }}</td>
+                                <td>{{ c.destination }}</td>
+                                <td>{{ c.user.username }}</td>
+
+
+                                <td><a href="{{ path('deletelivraison',{id:c.id}) }}"><button type="button" class="btn btn-danger">supprimer</button></a></td>
+                                <td><a href="{{ path('updatelivraison',{id:c.id}) }}"><button type="button" class="btn btn-success">modifier</button></a></td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

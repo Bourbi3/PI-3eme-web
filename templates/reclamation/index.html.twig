@@ -1,0 +1,265 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('front/styles/single_styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('front/styles/single_responsive.css') }}">
+
+{% endblock %}
+{% block body %}
+    <style>
+    .captcha{
+    margin-top: 25px;
+    margin-bottom:25px ;
+
+    }
+    .msg{
+    width: 100%;
+
+    }
+    textarea
+{
+	border: solid 1px #e5e5e5;
+	padding-left: 20px;
+	padding-top: 15px;
+}
+textarea:hover
+{
+	border-color: #7f7f7f !important;
+}
+
+
+        .message_submit_btn
+{
+	background: #1e1e27;
+	color: #FFFFFF;
+	text-transform: uppercase;
+
+	border: none;
+	height: 46px;
+	cursor: pointer;
+}
+.message_submit_btn:hover
+{
+	background: #2b2b34 !important;
+}
+</style>
+
+    <div class="container single_product_container">
+
+    <!-- Tabs -->
+
+    <div class="tabs_section_container">
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="tabs_container">
+                        <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
+                            <li class="tab active" data-active-tab="tab_1"><span>add reclamation</span></li>
+                             <li class="tab" data-active-tab="tab_3"><span>my reclamations {{ reclamation | length }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+
+
+                    <!-- Tab Description -->
+
+                    <div id="tab_1" class="tab_container active">
+                        <div>
+                            <h1>Get In Touch With Us!</h1>
+                            <p>Fill out the form below to recieve a free and confidential.</p>
+                               {{ form_start(form,{'attr': {'class': 'ajoutreq'}}) }}
+
+                                <div>
+                                 {{ form_widget(form.nom, {'attr': {'class': 'form_input input_name input_ph name','placeholder':'name'}}) }}
+                                 <p class="error1" style="display: none"> nom is required </p>
+                                 {{ form_widget(form.msg, {'attr': {'class': '"input_ph input_message msg','placeholder':'message'}}) }}
+                                  <p class="error2" style="display: none"> message is required </p>
+                                    <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                                     <p class=""> {% if error is defined %} {{ error }} {% endif %}</p>
+
+                                  </div>
+
+
+
+                                <div>
+                                    <button id="review_submit" type="submit" class="message_submit_btn" style="width: 100%" value="Submit">send message</button>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+
+                    <!-- Tab Additional Info -->
+
+
+                    <!-- Tab Reviews -->
+
+                    <div id="tab_3" class="tab_container">
+                        <div class="row">
+
+                            <!-- User Reviews -->
+
+                            <div class="col-lg-6 reviews_col">
+                                <div class="tab_title reviews_title">
+                                    <h4>my reclamations {{ reclamation | length  }}</h4>
+                                </div>
+
+                                <!-- User Review -->
+                                {% for r in reclamation %}
+                                <div class="user_review_container d-flex flex-column flex-sm-row" id="{{ r.id }}">
+                                    <div class="user">
+                                        <div class="user_pic"></div>
+                                        <div class="user_rating">
+                                            <ul class="star_rating">
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="review">
+                                        <div class="review_date">{{ 'now'|date('d - m -Y') }}</div>
+                                        <div class="user_name">{{ r.user.username }}</div>
+                                        <p>{{ r.msg }}</p>
+                                        <a href="{{ path('supprimerrec',{id:r.id}) }}"> <p>delete</p> </a>
+                                         <a href="{{ path('supprimerrec',{id:r.id}) }}"> <p>update</p> </a>
+                                    </div>
+
+                                </div>
+                                {% endfor %}
+
+
+                                <!-- User Review -->
+
+
+                            </div>
+
+                            <!-- Add Review -->
+
+                           <div class="col-lg-6 reviews_col">
+                                <div class="tab_title reviews_title">
+                                    <h4>reponses</h4>
+                                </div>
+                                <div class="user_review_container request d-flex flex-column flex-sm-row">
+                                 {% include 'reclamation/response.html.twig' with {'res': res} only %}
+                                </div>
+                                <!-- User Review -->
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Benefit -->
+
+    <div class="benefit">
+        <div class="container">
+            <div class="row benefit_row">
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+                        <div class="benefit_content">
+                            <h6>free shipping</h6>
+                            <p>Suffered Alteration in Some Form</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="fa fa-money" aria-hidden="true"></i></div>
+                        <div class="benefit_content">
+                            <h6>cach on delivery</h6>
+                            <p>The Internet Tend To Repeat</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                        <div class="benefit_content">
+                            <h6>45 days return</h6>
+                            <p>Making it Look Like Readable</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 benefit_col">
+                    <div class="benefit_item d-flex flex-row align-items-center">
+                        <div class="benefit_icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+                        <div class="benefit_content">
+                            <h6>opening all week</h6>
+                            <p>8AM - 09PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter -->
+
+    <div class="newsletter">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
+                        <h4>Newsletter</h4>
+                        <p>Subscribe to our newsletter and get 20% off your first purchase</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts  %}
+ <script src="https://www.google.com/recaptcha/api.js"></script>
+
+    <script src="{{ asset('front/js/single_custom.js') }}"></script>
+
+    <script>
+
+
+
+      document.querySelectorAll('.user_review_container').forEach(element=>{
+         element.addEventListener('click',e=>{
+             loadUrl(element.getAttribute('id'))
+
+         })
+
+        })
+      async function loadUrl(id){
+               const response = await fetch('/getresponse/'+id, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    if (response.status >= 200 && response.status < 300) {
+      const data = await response.json()
+      document.querySelector('.request').innerHTML=data.content
+
+      console.log(data.id)
+     }
+
+
+
+      }
+
+
+    </script>
+{% endblock %}

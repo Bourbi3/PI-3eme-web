@@ -1,0 +1,30 @@
+<div class="products_iso">
+    <div class="row">
+        <div class="col content">
+
+                    <div class="product-grid">
+            {% for p in products %}
+                <div class="product-item men">
+                    <div class="product discount product_filter">
+                        <div class="product_image">
+                            <img src="{{ asset(p.image) }}" alt="">
+                        </div>
+                        <div class="favorite favorite_left"></div>
+                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
+                        <div class="product_info">
+                            <h6 class="product_name"><a href="single.html">{{ p.nomProduit }}</a></h6>
+                            <div class="product_price">{{ p.prix }}</div>
+                        </div>
+                    </div>
+                    <div class="red_button add_to_cart_button"><a href="{{ path('app_panier',{id:p.id})}}">add to cart</a></div>
+                </div>
+
+            {% endfor %}
+            </div>
+        </div>
+        <div>
+            {{ knp_pagination_render(products) }}
+        </div>
+    </div>
+
+</div>

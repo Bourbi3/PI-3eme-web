@@ -1,0 +1,49 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+
+    <div class="container-fluid pt-4 px-4">
+        <div class="row">
+            <div class="col">
+                <div class="bg-light rounded h-100 p-4">
+                    <h6 class="mb-4">Basic Form</h6>
+                    {{ form_start(form,{'attr': {'class': 'ajoutcat'}}) }}
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">name</label>
+                            {{ form_widget(form.name, {'attr': {'class': 'form-control req'}}) }}
+                            <p style="color: red;display: none;" class="error" > this field cannot be null </p>
+
+
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%">{% if element == 'ajouter' %}ajouter{% else %}modifier{% endif %}</button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Form End -->
+
+{% endblock %}
+{% block js %}
+    <script>
+        const form = document.querySelector('.ajoutcat')
+        const input = document.querySelector('.req')
+        const errorP = document.querySelector('.error')
+        form.addEventListener('submit',e=>{
+            if(input.value==""){
+                e.preventDefault()
+                errorP.style.display = "block"
+
+
+
+
+            }
+
+        })
+
+
+    </script>
+{% endblock %}
